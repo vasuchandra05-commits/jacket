@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shubhi 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Merriweather', serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Opening Screen */
+        h1 {
+            font-size: 3em;
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .question {
+            font-size: 1.5em;
+            color: #555;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+            height: 150px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+            margin-left: -80px;
+        }
+
+        .yes-btn:hover {
+            box-shadow: 0 7px 20px rgba(255, 107, 157, 0.6);
+        }
+
+        .yes-btn.wobble {
+            animation: wobble 0.5s ease;
+        }
+
+        .no-btn {
+            background: #f0f0f0;
+            color: #999;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-left: 80px;
+        }
+
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg) scale(1.1); }
+            75% { transform: rotate(10deg) scale(1.1); }
+        }
+
+        /* Slot Machine */
+        .slot-machine {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .reel {
+            width: 80px;
+            height: 100px;
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.4);
+        }
+
+        .reel-content {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            animation: spin 1s ease-out;
+        }
+
+        @keyframes spin {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-500px); }
+        }
+
+        .jackpot-message {
+            font-size: 1.8em;
+            color: #ff6b9d;
+            margin-top: 30px;
+            font-weight: 700;
+            animation: pulse 1s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            font-size: 2em;
+            animation: fall linear;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Final Screen */
+        .final-content {
+            max-height: 70vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 10px;
+        }
+
+        .final-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .final-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .final-content::-webkit-scrollbar-thumb {
+            background: #ff6b9d;
+            border-radius: 10px;
+        }
+
+        .photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .photo {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .photo:hover {
+            transform: scale(1.05);
+        }
+
+        .final-message {
+            color: white;
+            font-size: 1.3em;
+            line-height: 1.8;
+            font-weight: 300;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.8), rgba(255, 143, 171, 0.8));
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2.5em; }
+            .question { font-size: 1.2em; }
+            button { font-size: 1em; padding: 12px 30px; }
+            .reel { width: 60px; height: 80px; font-size: 2.5em; }
+            .jackpot-message { font-size: 1.3em; }
+            .final-message { font-size: 1.1em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <!-- Opening Screen -->
+        <div class="screen active" id="openingScreen">
+            <h1>Shubhi 💖</h1>
+            <p class="question">Will you be my Valentine?</p>
+            <div class="button-container">
+                <button class="yes-btn" id="yesBtn">Yes 💕</button>
+                <button class="no-btn" id="noBtn">No 😅</button>
+            </div>
+        </div>
+
+        <!-- Slot Machine Screen -->
+        <div class="screen" id="slotScreen">
+            <h1>🎰</h1>
+            <div class="slot-machine">
+                <div class="reel" id="reel1">
+                    <div class="reel-content">❤️</div>
+                </div>
+                <div class="reel" id="reel2">
+                    <div class="reel-content">❤️</div>
+                </div>
+                <div class="reel" id="reel3">
+                    <div class="reel-content">❤️</div>
+                </div>
+            </div>
+            <p class="jackpot-message" id="jackpotMsg" style="display: none;">🎉 Vasu just hit the jackpot! 🎉</p>
+        </div>
+
+        <!-- Final Screen -->
+        <div class="screen" id="finalScreen">
+            <div class="final-content">
+                <div class="photos">
+                    <img src="photo1.jpg" alt="Memory 1" class="photo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23ff6b9d%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E💕%3C/text%3E%3C/svg%3E'">
+                    <img src="photo2.jpg" alt="Memory 2" class="photo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23ff8fab%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E💖%3C/text%3E%3C/svg%3E'">
+                    <img src="photo3.jpg" alt="Memory 3" class="photo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23ffa5ba%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3E💗%3C/text%3E%3C/svg%3E'">
+                </div>
+                <div class="final-message">
+                    Life gave me the best plot twist when it gave me you.<br>
+                    Thank you for being my person.<br>
+                    I love you more each day.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let clickCount = 0;
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const openingScreen = document.getElementById('openingScreen');
+        const slotScreen = document.getElementById('slotScreen');
+        const finalScreen = document.getElementById('finalScreen');
+        const jackpotMsg = document.getElementById('jackpotMsg');
+
+        yesBtn.addEventListener('click', function() {
+            clickCount++;
+
+            if (clickCount < 4) {
+                // Wobble and jump to completely different positions
+                yesBtn.classList.add('wobble');
+                
+                // Generate random positions across the entire card area
+                const maxX = 150;
+                const maxY = 50;
+                const randomX = (Math.random() - 0.5) * maxX * 2;
+                const randomY = (Math.random() - 0.5) * maxY * 2;
+                
+                // Reset initial positioning and apply new random transform
+                yesBtn.style.top = '50%';
+                yesBtn.style.left = '50%';
+                yesBtn.style.marginLeft = '0';
+                yesBtn.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
+                
+                setTimeout(() => {
+                    yesBtn.classList.remove('wobble');
+                }, 500);
+            } else {
+                // Proceed to slot machine
+                showSlotMachine();
+            }
+        });
+
+        function showSlotMachine() {
+            openingScreen.classList.remove('active');
+            slotScreen.classList.add('active');
+
+            // Spin animation
+            const emojis = ['💕', '💖', '💗', '💘', '💝', '❤️'];
+            const reels = [
+                document.getElementById('reel1'),
+                document.getElementById('reel2'),
+                document.getElementById('reel3')
+            ];
+
+            reels.forEach((reel, index) => {
+                const reelContent = reel.querySelector('.reel-content');
+                let emojiList = '';
+                for (let i = 0; i < 10; i++) {
+                    emojiList += emojis[Math.floor(Math.random() * emojis.length)] + '<br>';
+                }
+                emojiList += '❤️';
+                reelContent.innerHTML = emojiList;
+                
+                // Stagger the animation
+                setTimeout(() => {
+                    reelContent.style.animation = `spin ${1.5 + index * 0.3}s ease-out`;
+                }, index * 200);
+            });
+
+            // Show jackpot message and confetti
+            setTimeout(() => {
+                jackpotMsg.style.display = 'block';
+                createConfetti();
+                
+                // Transition to final screen
+                setTimeout(() => {
+                    showFinalScreen();
+                }, 3000);
+            }, 2500);
+        }
+
+        function createConfetti() {
+            const confettiEmojis = ['💕', '💖', '💗', '💘', '💝', '❤️', '💐', '🌹', '✨', '⭐'];
+            const confettiCount = 50;
+
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.textContent = confettiEmojis[Math.floor(Math.random() * confettiEmojis.length)];
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-50px';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.animationDelay = '0s';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 4000);
+                }, i * 50);
+            }
+        }
+
+        function showFinalScreen() {
+            slotScreen.classList.remove('active');
+            finalScreen.classList.add('active');
+        }
+    </script>
+</body>
+</html>
